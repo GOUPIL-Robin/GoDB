@@ -1,0 +1,25 @@
+/*!
+
+@addtogroup FormatData .goD file format
+
+The data file will store all the objects you stored in the database.
+The database will read it when you'll try to load an object.
+\n
+The .goD files store the data as @e objects made of elements. The format is
+pretty simple.
+
+- Header:
+	- <pre>(2 octet)	goD file signature (0x24 0x10)</pre>
+
+- Then for all the objects present in the database:
+	- <pre>(8 octet)	id</pre>
+	- <pre>(8 octet)	elements count (as @b X)</pre>
+	- @b X elements:
+		- <pre>(8 octet)	key size (as @b KS)</pre>
+		- <pre>(@b KS * 1 octet)	key</pre>
+		- <pre>(8 octet)	data size (as @b DS)</pre>
+		- <pre>(@b DS * 1 octet)	data</pre>
+
+\n
+
+*/

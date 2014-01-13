@@ -1,0 +1,166 @@
+##
+## Easymake
+##
+## Made by robin goupil
+## Login   <goupil_r@epitech.net>
+##
+
+DIR.CNT		=	./.cnt_file
+
+CRED		=	\033[31m
+CGREEN		=	\033[32m
+CYELLOW		=	\033[33m
+CBLUE		=	\033[34m
+CPURPLE		=	\033[35m
+CCIAN		=	\033[36m
+CWHITE		=	\033[37m
+SBOLD		=	\033[1m
+CRESET		=	\033[m
+
+BIN		=	0
+STATIC		=	1
+SHARED		=	2
+
+DEBUG		=	0
+RELEASE		=	1
+FLAGS.HIDDEN	=
+FLAGS.HIDDEN.I	= $(DIR.I:%=-I%)
+FLAGS.HIDDEN.I	+= $(FLAGS.I)
+
+ifeq ($(CXX), gcc)
+	EXTENSION	=	.c
+else ifeq ($(CXX), clang)
+	EXTENSION	=	.c
+else ifeq ($(CXX), clang++)
+	EXTENSION	=	.cpp
+else
+	EXTENSION	=	.cpp
+endif
+
+ifeq ($(TARGET.MOD), $(DEBUG))
+	FLAGS.HIDDEN	+=	$(FLAGS.DEBUG)
+	MOD.NAME	=	"Debug"
+else ifeq ($(TARGET.MOD), $(RELEASE))
+	FLAGS.HIDDEN	+=	$(FLAGS.RELEASE)
+	MOD.NAME	=	"Release"
+else
+	MOD.NAME	=	"Custom"
+endif
+
+OBJ		=	$(SRC:%$(EXTENSION)=$(DIR.O)/%.o)
+
+DEPFILE		=	$(SRC:%$(EXTENSION)=$(DIR.O)/%.d)
+
+all:		deps present dirs $(TARGET.NAME)
+
+re:		deps present fclean dirs $(TARGET.NAME)
+
+run:
+	@./$(TARGET.NAME)
+
+clean:		deps present
+	@echo "$(CCIAN)Cleaning objects$(CRESET)"
+	@$(RM) $(OBJ)
+	@$(RM) $(DEPFILE)
+	@$(RM) $(DIR.CNT)
+
+fclean:		deps present clean
+	@echo "$(CCIAN)Removing $(TARGET.NAME)$(CRESET)"
+	@$(RM) $(TARGET.NAME)
+
+
+dirs:		deps present
+	@if [ ! -e "$(DIR.O)" ]; then\
+		mkdir "$(DIR.O)";\
+	fi;\
+	touch "$(DIR.O)/.empty";
+	@for dir in $(SRC); do\
+		if [ ! -e "$$dir" ]; then\
+			mkdir -p "$(DIR.O)/`dirname $$dir`";\
+		fi;\
+		touch "$(DIR.O)/`dirname $$dir`/.empty";\
+	done
+	@for dir in $(DIR.S); do\
+		if [ ! -e "$$dir" ]; then\
+			mkdir -p "$$dir";\
+		fi;\
+		touch "$$dir/.empty";\
+	done
+	@for dir in $(DIR.I); do\
+		if [ ! -e "$$dir" ]; then\
+			mkdir -p "$$dir";\
+		fi;\
+		touch "$$dir/.empty";\
+	done
+	@for dir in $(DIR.CUSTOM); do\
+		if [ ! -e "$$dir" ]; then\
+			mkdir -p "$$dir";\
+		fi;\
+		touch "$$dir/.empty";\
+	done
+
+
+present:
+ifeq ($(TARGET.MOD), $(DEBUG))
+	@echo "$(SBOLD)$(CWHITE)$(MAKE.NAME) $(CRED)($(MOD.NAME))$(CWHITE) :$(CRESET)";
+else
+	@echo "$(SBOLD)$(CWHITE)$(MAKE.NAME) $(CGREEN)($(MOD.NAME))$(CWHITE) :$(CRESET)";
+endif
+
+deps:
+	@for file in $(DEPS); do\
+		make $(MAKECMDGOALS) -sC "$$file";\
+		if [ "$$?" != "0" ]; then\
+			exit 1;\
+		fi;\
+		echo "";\
+	done
+
+$(TARGET.NAME):	present
+$(TARGET.NAME):	$(shell echo 0 > $(DIR.CNT))
+$(TARGET.NAME):	$(OBJ)
+ifeq ($(TARGET.TYPE), $(BIN))
+	@echo "$(SBOLD)$(CRED)Linking $(TARGET.NAME)...$(CRESET)"
+	@$(LNK) -o $(TARGET.NAME) $(OBJ) $(FLAGS.LNK)
+else
+	@echo "$(SBOLD)$(CRED)Archiving $(TARGET.NAME)...$(CRESET)"
+	@$(LD) $(TARGET.NAME) $(OBJ) $(FLAGS.LD)
+endif
+	@$(RM) $(DIR.CNT)
+#ifeq ($(TARGET.MOD), $(DEBUG))
+#	@echo "$(SBOLD)$(CRED)******************************************$(CRESET)"
+#	@echo "$(SBOLD)$(CRED)Warning:$(CRESET)"
+#	@echo "$(SBOLD)$(CRED)\tproject \"$(MAKE.NAME)\" is in debug mode$(CRESET)"
+#	@echo "$(SBOLD)$(CRED)******************************************$(CRESET)"
+#endif
+	@echo "$(SBOLD)$(CRED)Done$(CRESET)"
+
+$(DIR.O)/%.o: $(DIR.S)/%.cpp
+	@max=`echo $(SRC) | wc -w`; \
+	if [ -e "$(DIR.CNT)" ]; then \
+		cnt=`cat $(DIR.CNT)`; \
+	else \
+		cnt="0"; \
+	fi; \
+	cnt="$$((cnt + 1))"; \
+	echo $$cnt > $(DIR.CNT); \
+	pct=`expr $$cnt '*' 100 / $$max`; \
+	echo "$(CGREEN)($$pct%) Compiling $< $(FLAGS.CXX)$(CRESET)";
+	@$(CXX) $(FLAGS.CXX) $(FLAGS.HIDDEN) $(FLAGS.HIDDEN.I) -MMD -c -o $@ $<
+
+$(DIR.O)/%.o: $(DIR.S)/%.c
+	@max=`echo $(SRC) | wc -w`; \
+	if [ -e "$(DIR.CNT)" ]; then \
+		cnt=`cat $(DIR.CNT)`; \
+	else \
+		cnt="0"; \
+	fi; \
+	cnt="$$((cnt + 1))"; \
+	echo $$cnt > $(DIR.CNT); \
+	pct=`expr $$cnt '*' 100 / $$max`; \
+	echo "$(CGREEN)($$pct%) Compiling $< $(FLAGS.CXX)$(CRESET)";
+	@$(CXX) $(DIR.I) $(FLAGS.CXX) $(FLAGS.HIDDEN) $(FLAGS.HIDDEN.I) -MMD -c -o $@ $<
+
+-include $(DEPFILE)
+
+.PHONY:		all dirs present deps $(TARGET.NAME) release debug clean fclean

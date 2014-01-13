@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classgodb_1_1_a_resource.html" title="Abstract class to store the data." alt="" coords="209,192,332,381"/>
+<area shape="rect" id="node5" href="$classgodb_1_1_sizable_resource.html" title="Store data as a resource when only it&#39;s size is known." alt="" coords="5,439,163,524"/>
+<area shape="rect" id="node7" href="$classgodb_1_1_t_resource.html" title="Store data as a resource with a known type." alt="" coords="187,430,355,533"/>
+<area shape="rect" id="node9" href="$classgodb_1_1_t_resource_3_01std_1_1string_01_4.html" title="Store data as a resource for the special relation between std::string and char *." alt="" coords="379,430,581,533"/>
+</map>

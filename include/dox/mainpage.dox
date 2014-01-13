@@ -1,0 +1,25 @@
+/*!
+
+\mainpage
+
+For information about the .goD and .goI file's format
+check \link FormatData \endlink.
+\n
+\n
+
+<h1>Example</h1>
+Let's see an example on how to use GoDB:
+
+@include main.cpp
+
+This snippet will produce this output:
+
+@code
+
+>$g++ main.cpp -L./ -lGoDB
+>$./a.out
+hello world
+Succefully removed objects.
+>$
+@endcode
+*/

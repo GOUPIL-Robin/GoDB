@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\AResource.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\Database.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\DataStorer.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\DataStorer.tpp">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\IObject.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\IResource.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\SizableResource.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\TResource.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\TResource.tpp">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\include\utils.hh">
+      <Filter>Header Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\AResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\Database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\DataStorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\SizableResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
